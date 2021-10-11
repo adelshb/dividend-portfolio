@@ -1,5 +1,7 @@
 .env/*
 .DS_Store
+tickers.txt
+*.ics
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

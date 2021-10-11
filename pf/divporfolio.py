@@ -14,8 +14,8 @@
 
 from typing import List, Optional
 
-import yfinance as yf
-from datetime import datetime, timedelta
+from yfinance import Ticker
+from datetime import datetime
 
 class DividendPorfolio(object):
     """
@@ -32,7 +32,7 @@ class DividendPorfolio(object):
         """
 
         # Get parameters
-        self._tickers = [yf.Ticker(t) for t  in tickers]
+        self._tickers = [Ticker(t) for t  in tickers]
         self._symbols = [t.get_info()["symbol"] for t in self._tickers]
 
     def get_exDividendDates(self,
@@ -124,6 +124,5 @@ class DividendPorfolio(object):
                         c.events.add(e)
             ind+=1
 
-        print(start_date, end_date, c.events)
         with open(save_path + "/" + calendar_name + '.ics', 'w') as my_file:
             my_file.writelines(c)

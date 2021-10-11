@@ -12,24 +12,31 @@
 
 """ Test script. """
 
-from typing import List, Optional
+from argparse import ArgumentParser
 
 from pf.divporfolio import DividendPorfolio
 
-def main(tickers: List[str],
-        start_date: Optional[str] = "2021-10-11",
-        end_date: Optional[str] = "2021-12-17"
-        ) -> None:
+def main(args):
+
+    with open(args.tickers_filename) as file:
+        tickers = file.readlines()
+        tickers = [ticker.rstrip() for ticker in tickers]
 
     DP = DividendPorfolio(tickers)
-    DP.write_ics(start_date=start_date, end_date= end_date)
+    DP.write_ics(start_date=args.start_date, end_date=args.end_date)
     # from IPython import embed; embed()
 
 if __name__ == "__main__":
 
-    # filename = "div_portfolio_tickers.txt"
-    # with open(filename) as file:
-    #     lines = file.readlines()
-    #     lines = [line.rstrip() for line in lines]
-    tickers = ["MSFT", "BLK"]  
-    main(tickers)
+    parser = ArgumentParser()
+
+    # Tickers
+    # parser.add_argument("--tickers", type=int, nargs='+', default=["MSFT", "BLK"])
+    parser.add_argument("--tickers_filename", type=str, default="tickers.txt")
+
+    # Calendar
+    parser.add_argument("--start_date", type=str, default="2021-10-11")
+    parser.add_argument("--end_date", type=str, default="2021-12-31")
+    
+    args = parser.parse_args()
+    main(args)
